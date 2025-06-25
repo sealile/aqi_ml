@@ -35,16 +35,32 @@ df = pd.concat(dfs, axis=0, ignore_index=True)  # axis=0表示纵向合并
 
 
 # 2. 数据预处理
-X = df.drop(columns=[df.columns[0], df.columns[1]])  # 去除日期和AQI列
-y = df.iloc[:, 1]  # 目标列
-
-# 处理缺失值（推荐使用中位数填充避免异常值影响）
-X = X.fillna(X.median())
+X_train = df.drop(columns=[df.columns[0], df.columns[1]])  # 去除日期和AQI列
+y_test = df.iloc[:, 1]  # 目标列
 
 
 
-X_train, X_test =X,y
-y_train, y_test= 
+
+loc='jinan'
+# locs=['jinan',]#'chengdu','shanghai','tianjin'
+file_paths = [f"../2025/combine_{loc}_2025.xlsx"]
+
+# 读取数据
+# df = pd.read_excel("./jinan_fuben/combine_2020.xlsx")
+
+dfs = []  # 存储所有DataFrame的列表'
+for file in file_paths:
+    df = pd.read_excel(file)  # 读取单个文件
+    dfs.append(df)            # 将DataFrame添加到列表中
+
+# 合并所有DataFrame（纵向堆叠）
+df = pd.concat(dfs, axis=0, ignore_index=True)  # axis=0表示纵向合并
+
+
+# 2. 数据预处理
+X_test = df.drop(columns=[df.columns[0], df.columns[1]])  # 去除日期和AQI列
+y_test = df.iloc[:, 1]  # 目标列
+
 
 
 # 5. 配置增强版参数
