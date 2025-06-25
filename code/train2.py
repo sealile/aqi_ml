@@ -42,18 +42,9 @@ y = df.iloc[:, 1]  # 目标列
 X = X.fillna(X.median())
 
 
-# 3. 划分数据集
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=1)
 
-# # 4. 标准化处理（注意：仅在训练集上拟合scaler）
-# scaler = StandardScaler()
-# X_train_scaled = scaler.fit_transform(X_train)
-# X_test_scaled = scaler.transform(X_test)  # 测试集使用相同的scaler
-#
-# # 转换为DataFrame保持列名（可选）
-# X_train = pd.DataFrame(X_train_scaled, columns=X.columns)
-# X_test = pd.DataFrame(X_test_scaled, columns=X.columns)
+X_train, X_test =X,y
+y_train, y_test= 
 
 
 # 5. 配置增强版参数
@@ -86,25 +77,7 @@ model.fit(
     ]
 )
 
-# 使用SHAP解释模型
-explainer = shap.TreeExplainer(model)
-shap_values = explainer(X_test)
 
-# feature_names = X.columns.tolist()
-feature_names=['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3',
-                'AVG_T', 'AVG_DP', 'MAX_T', 'MIN_T', 'AVG_V', 'AVG_WS', 'MAX_WS', 'PR', 'RH']
-
-# 全局特征重要性（条形图）
-plt.figure(figsize=(10, 6))
-shap.plots.bar(shap_values,max_display=15,show=False)
-plt.savefig("tiaoxing.svg", format="svg", bbox_inches="tight")
-plt.close()
-
-# 特征影响分布图（蜂群图）
-plt.figure(figsize=(10, 6))
-shap.summary_plot(shap_values, X_test, feature_names=feature_names,show=False)
-plt.savefig("fengqun.svg", format="svg", bbox_inches="tight")
-plt.close()
 
 
 
